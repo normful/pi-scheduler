@@ -14,42 +14,31 @@ const SchedulePromptToolParams = Type.Object({
 			Type.Literal("enable"),
 			Type.Literal("disable"),
 		],
-		{
-			description: "Action to perform",
-		},
 	),
-	kind: Type.Optional(Type.Union([Type.Literal("recurring"), Type.Literal("once")], { description: "Task kind" })),
-	prompt: Type.Optional(Type.String({ description: "Prompt text to run when the task fires" })),
+	kind: Type.Optional(Type.Union([Type.Literal("recurring"), Type.Literal("once")])),
+	prompt: Type.Optional(Type.String({ description: "Prompt to run at task start" })),
 	duration: Type.Optional(
 		Type.String({
 			description:
-				"Delay/interval like 5m, 2h, 1 day. For kind=once this is required. For kind=recurring this creates interval-based loops.",
+				"Delay/interval like 5m, 2h, 1 day. Required for kind=once. Interval for kind=recurring.",
 		}),
 	),
 	cron: Type.Optional(
 		Type.String({
 			description:
-				"Cron expression for recurring tasks. Accepts 5-field (minute hour dom month dow) or 6-field (sec minute hour dom month dow).",
+				"Cron expr: 5-field (minute hour dom month dow) or 6-field (sec minute hour dom month dow)",
 		}),
 	),
-	id: Type.Optional(Type.String({ description: "Task id for delete action" })),
+	id: Type.Optional(Type.String({ description: "Task id to delete" })),
 });
 
 type SchedulePromptToolParamsType = Static<typeof SchedulePromptToolParams>;
 
 export function registerTools(pi: ExtensionAPI, runtime: SchedulerRuntime) {
 	pi.registerTool({
-		name: "schedule_prompt",
-		label: "Schedule Prompt",
-		description:
-			"Create/list/enable/disable/delete scheduled prompts. Use this when the user asks for reminders or recurring checks. add requires prompt; once tasks require duration; recurring supports interval (duration) or cron expression (cron).",
-		promptSnippet:
-			"Create/list/enable/disable/delete scheduled prompts. Supports recurring intervals/cron and one-time reminders (session-scoped).",
-		promptGuidelines: [
-			"Use this tool when user asks to remind/check back later.",
-			"For recurring tasks use kind='recurring' with duration like 5m or 2h, or provide cron.",
-			"For one-time reminders use kind='once' with duration like 30m or 1h.",
-		],
+		name: "schedule",
+		label: "Schedule repeating work",
+		description: "Scheduled prompts CRUD. Use when user asks for reminders or recurring tasks. add requires prompt; once tasks require duration; recurring supports interval or cron expr",
 		parameters: SchedulePromptToolParams,
 		execute: async (
 			_toolCallId,
