@@ -2,19 +2,12 @@ import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { SchedulerRuntime } from "./runtime";
 
 export function registerEvents(pi: ExtensionAPI, runtime: SchedulerRuntime) {
-	pi.on("session_start", async (_event, ctx) => {
+	pi.on("session_start", async (event, ctx) => {
 		runtime.setRuntimeContext(ctx);
-		runtime.startScheduler();
-		runtime.updateStatus();
-	});
-
-	pi.on("session_switch", async (_event, ctx) => {
-		runtime.setRuntimeContext(ctx);
-		runtime.updateStatus();
-	});
-
-	pi.on("session_fork", async (_event, ctx) => {
-		runtime.setRuntimeContext(ctx);
+		// Only start scheduler on initial startup, not for session switches/forks
+		if (event.reason === "startup") {
+			runtime.startScheduler();
+		}
 		runtime.updateStatus();
 	});
 
