@@ -6,6 +6,7 @@ import { registerTools } from "./tools";
 
 export {
 	computeNextCronRunAt,
+	loopArgumentCompletions,
 	normalizeCronExpression,
 	parseLoopScheduleArgs,
 	validateSchedulePromptAddInput,

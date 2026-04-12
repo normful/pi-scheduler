@@ -1,6 +1,7 @@
 import { Cron } from "croner";
 import { DEFAULT_LOOP_INTERVAL, ONE_MINUTE } from "./constants";
 import type { ParseResult, ReminderParseResult, SchedulePromptAddPlan, TaskKind } from "./types";
+import type { AutocompleteItem } from "@mariozechner/pi-tui";
 
 export function normalizeCronExpression(rawInput: string): { expression: string; note?: string } | undefined {
 	const input = rawInput.trim();
@@ -180,6 +181,60 @@ export function parseLoopScheduleArgs(args: string): ParseResult | undefined {
 			durationMs: DEFAULT_LOOP_INTERVAL,
 		},
 	};
+}
+
+export function loopArgumentCompletions(argumentPrefix: string): AutocompleteItem[] | null {
+	// Position 1 — Start of input (only whitespace)
+	if (argumentPrefix.trim() === "") {
+		return [
+			{ value: "cron ", label: "cron <expr>", description: "Cron-based recurring schedule (6-field)" },
+			{ value: "5m ", label: "5m", description: "Every 5 minutes" },
+			{ value: "10m ", label: "10m", description: "Every 10 minutes" },
+			{ value: "15m ", label: "15m", description: "Every 15 minutes" },
+			{ value: "30m ", label: "30m", description: "Every 30 minutes" },
+			{ value: "1h ", label: "1h", description: "Every hour" },
+			{ value: "2h ", label: "2h", description: "Every 2 hours" },
+			{ value: "6h ", label: "6h", description: "Every 6 hours" },
+			{ value: "1d ", label: "1d", description: "Every day" },
+		];
+	}
+
+	const input = argumentPrefix.toLowerCase();
+
+	// Position 2 — After `cron `
+	if (input.startsWith("cron ")) {
+		return [
+			{ value: "*/5 * * * * ", label: "*/5 * * * *", description: "Every 5 minutes" },
+			{ value: "*/15 * * * * ", label: "*/15 * * * *", description: "Every 15 minutes" },
+			{ value: "*/30 * * * * ", label: "*/30 * * * *", description: "Every 30 minutes" },
+			{ value: "0 * * * * ", label: "0 * * * *", description: "Every hour (at :00)" },
+			{ value: "0 */2 * * * ", label: "0 */2 * * *", description: "Every 2 hours" },
+			{ value: "0 9 * * * ", label: "0 9 * * *", description: "Every day at 9:00 AM" },
+			{ value: "0 9 * * 1-5 ", label: "0 9 * * 1-5", description: "Weekdays at 9:00 AM" },
+		];
+	}
+
+	// Position 3 — After a duration prefix (e.g., `5m `, `2h `) with prompt
+	// Check if input STARTS with a valid duration
+	if (input.match(/^\s*\d+\s*[smhd]\s/)) {
+		return []; // No completions for free-form prompt
+	}
+
+	// Position 4 — After `every ` (trailing)
+	if (input.endsWith(" every ")) {
+		return [
+			{ value: "5m", label: "5m", description: "Every 5 minutes" },
+			{ value: "10m", label: "10m", description: "Every 10 minutes" },
+			{ value: "15m", label: "15m", description: "Every 15 minutes" },
+			{ value: "30m", label: "30m", description: "Every 30 minutes" },
+			{ value: "1h", label: "1h", description: "Every hour" },
+			{ value: "2h", label: "2h", description: "Every 2 hours" },
+			{ value: "6h", label: "6h", description: "Every 6 hours" },
+			{ value: "1d", label: "1d", description: "Every day" },
+		];
+	}
+
+	return null;
 }
 
 export function parseRemindScheduleArgs(args: string): ReminderParseResult | undefined {

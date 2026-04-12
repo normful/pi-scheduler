@@ -4,6 +4,7 @@ export default extension;
 
 export {
 	computeNextCronRunAt,
+	loopArgumentCompletions,
 	normalizeCronExpression,
 	parseLoopScheduleArgs,
 	validateSchedulePromptAddInput,

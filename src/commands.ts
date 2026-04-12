@@ -1,12 +1,13 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { MAX_TASKS } from "./constants";
-import { formatDurationShort, parseLoopScheduleArgs, parseRemindScheduleArgs } from "./scheduling";
+import { formatDurationShort, loopArgumentCompletions, parseLoopScheduleArgs, parseRemindScheduleArgs } from "./scheduling";
 import { SchedulerRuntime } from "./runtime";
 
 export function registerCommands(pi: ExtensionAPI, runtime: SchedulerRuntime) {
 	pi.registerCommand("loop", {
 		description:
 			"Schedule recurring prompt: /loop 5m <prompt>, /loop <prompt> every 2h, or /loop cron <expr> <prompt>",
+		getArgumentCompletions: loopArgumentCompletions,
 		handler: async (args, ctx) => {
 			const parsed = parseLoopScheduleArgs(args);
 			if (!parsed) {
