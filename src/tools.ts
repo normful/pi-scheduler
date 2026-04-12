@@ -38,7 +38,7 @@ export function registerTools(pi: ExtensionAPI, runtime: SchedulerRuntime) {
 	pi.registerTool({
 		name: "schedule",
 		label: "Schedule repeating work",
-		description: "Scheduled prompts CRUD. Use when user asks for reminders or recurring tasks. add requires prompt; once tasks require duration; recurring supports interval or cron expr",
+		description: "Create scheduled or recurring prompts as a task, with action=add",
 		parameters: SchedulePromptToolParams,
 		execute: async (
 			_toolCallId,
