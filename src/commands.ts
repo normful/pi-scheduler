@@ -6,7 +6,7 @@ import { SchedulerRuntime } from "./runtime";
 export function registerCommands(pi: ExtensionAPI, runtime: SchedulerRuntime) {
 	pi.registerCommand("loop", {
 		description:
-			"Schedule recurring prompt: /loop 5m <prompt>, /loop <prompt> every 2h, or /loop cron <expr> <prompt>",
+			"/loop 2[mshd] <prompt>, /loop cron */5 * * * * <prompt>",
 		getArgumentCompletions: loopArgumentCompletions,
 		handler: async (args, ctx) => {
 			const parsed = parseLoopScheduleArgs(args);
