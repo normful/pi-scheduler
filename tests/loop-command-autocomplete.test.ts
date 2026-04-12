@@ -6,8 +6,16 @@ test("loopArgumentCompletions returns duration/cron options at empty prefix", ()
 	const result = loopArgumentCompletions("");
 	assert.ok(result);
 	assert.ok(result!.length > 0);
+	assert.ok(result!.some((c) => c.value === "1m "));
+	assert.ok(result!.some((c) => c.value === "2m "));
+	assert.ok(result!.some((c) => c.value === "3m "));
 	assert.ok(result!.some((c) => c.value === "5m "));
-	assert.ok(result!.some((c) => c.value === "cron "));
+	assert.ok(result!.some((c) => c.value === "15m "));
+	assert.ok(result!.some((c) => c.value === "30m "));
+	assert.ok(result!.some((c) => c.value === "1h "));
+	assert.ok(!result!.some((c) => c.value === "2h "));
+	assert.ok(!result!.some((c) => c.value === "6h "));
+	assert.ok(!result!.some((c) => c.value === "1d "));
 });
 
 test("loopArgumentCompletions returns duration/cron options at whitespace prefix", () => {

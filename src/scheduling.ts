@@ -188,14 +188,13 @@ export function loopArgumentCompletions(argumentPrefix: string): AutocompleteIte
 	if (argumentPrefix.trim() === "") {
 		return [
 			{ value: "cron ", label: "cron <expr>", description: "Cron-based recurring schedule (6-field)" },
+			{ value: "1m ", label: "1m", description: "Every minute" },
+			{ value: "2m ", label: "2m", description: "Every 2 minutes" },
+			{ value: "3m ", label: "3m", description: "Every 3 minutes" },
 			{ value: "5m ", label: "5m", description: "Every 5 minutes" },
-			{ value: "10m ", label: "10m", description: "Every 10 minutes" },
 			{ value: "15m ", label: "15m", description: "Every 15 minutes" },
 			{ value: "30m ", label: "30m", description: "Every 30 minutes" },
 			{ value: "1h ", label: "1h", description: "Every hour" },
-			{ value: "2h ", label: "2h", description: "Every 2 hours" },
-			{ value: "6h ", label: "6h", description: "Every 6 hours" },
-			{ value: "1d ", label: "1d", description: "Every day" },
 		];
 	}
 
