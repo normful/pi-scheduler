@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { type Static, Type } from "@sinclair/typebox";
 import { DEFAULT_LOOP_INTERVAL, MAX_TASKS } from "./constants";
 import { formatDurationShort, validateSchedulePromptAddInput } from "./scheduling";

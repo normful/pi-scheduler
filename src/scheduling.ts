@@ -1,7 +1,7 @@
 import { Cron } from "croner";
 import { DEFAULT_LOOP_INTERVAL, ONE_MINUTE } from "./constants";
 import type { ParseResult, ReminderParseResult, SchedulePromptAddPlan, TaskKind } from "./types";
-import type { AutocompleteItem } from "@mariozechner/pi-tui";
+import type { AutocompleteItem } from "@earendil-works/pi-tui";
 
 export function normalizeCronExpression(rawInput: string): { expression: string; note?: string } | undefined {
 	const input = rawInput.trim();

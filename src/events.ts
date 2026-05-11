@@ -1,4 +1,4 @@
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { SchedulerRuntime } from "./runtime";
 
 export function registerEvents(pi: ExtensionAPI, runtime: SchedulerRuntime) {
